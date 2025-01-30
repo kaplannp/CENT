@@ -5,12 +5,12 @@ import argparse
 debug = False
 
 InOut_latency = 0.15        # Top-K sampling on CPU
-n_heads = {"Llama2-7B": 32, "Llama2-13B": 40, "Llama2-70B": 64}
-gqa_factor = {"Llama2-7B": 1, "Llama2-13B": 1, "Llama2-70B": 8}
-embedding_size = {"Llama2-7B": 4096, "Llama2-13B": 5120, "Llama2-70B": 8192, "GPT3-175B": 12288, "GPT3-175B-TP-8": 12288, "OPT-66B": 9216}
-ffn_size = {"Llama2-7B": 11008, "Llama2-13B": 13824, "Llama2-70B": 28672, "GPT3-175B": 12288*4, "GPT3-175B-TP-8": 12288*4, "OPT-66B": 9216*4}
-TransformerBlock_number = {"Llama2-7B": 32, "Llama2-13B": 40, "Llama2-70B": 80}
-minimal_channel_per_block = {"Llama2-7B": 5, "Llama2-13B": 8, "Llama2-70B": 6}
+n_heads = {"Llama2-7B": 32, "Llama2-13B": 40, "Llama2-70B": 64, "GPT3-175B": 96, "GPT3-175B-TP-8-PP-4": 96, "OPT-66B": 72, "GPT3-175B-PP-32": 96}
+gqa_factor = {"Llama2-7B": 1, "Llama2-13B": 1, "Llama2-70B": 8, "GPT3-175B": 1, "GPT3-175B-TP-8-PP-4": 1, "OPT-66B": 1, "GPT3-175B-PP-32": 1}
+embedding_size = {"Llama2-7B": 4096, "Llama2-13B": 5120, "Llama2-70B": 8192, "GPT3-175B": 12288, "GPT3-175B-TP-8-PP-4": 12288, "OPT-66B": 9216, "GPT3-175B-PP-32": 12288}
+ffn_size = {"Llama2-7B": 11008, "Llama2-13B": 13824, "Llama2-70B": 28672, "GPT3-175B": 12288*4, "GPT3-175B-TP-8-PP-4": 12288*4, "OPT-66B": 9216*4, "GPT3-175B-PP-32": 12288*4}
+TransformerBlock_number = {"Llama2-7B": 32, "Llama2-13B": 40, "Llama2-70B": 80, "GPT3-175B": 96, "GPT3-175B-TP-8-PP-4": 24, "OPT-66B": 72, "GPT3-175B-PP-32": 3}
+minimal_channel_per_block = {"Llama2-7B": 5, "Llama2-13B": 8, "Llama2-70B": 6, "GPT3-175B": 0, "GPT3-175B-TP-8-PP-4": 0, "OPT-66B": 0, "GPT3-175B-PP-32": 0}
 pipeline_parallel_mode_list = ["pipeline_parallel", "pipeline_parallel_embedding"]
 model_parallel_mode_list = ["model_parallel", "model_parallel_embedding", "model_parallel_FC"]
 

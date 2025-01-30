@@ -16,7 +16,7 @@ def get_args():
     parser.add_argument("--reuse_size", type=int, help="GB reuse size, depending on register number", default=32)
     parser.add_argument("--generate_trace_max_workers", type=int, help="maximum concurrent threads to generate traces, limited by memory", default=20)
     parser.add_argument("--run_simulation_max_workers", type=int, help="maximum concurrent threads to generate traces, limited by memory", default=4)
-    parser.add_argument("--model", choices=["Llama2-7B", "Llama2-13B", "Llama2-70B"], help="LLM Model", required=True)
+    parser.add_argument("--model", choices=["Llama2-7B", "Llama2-13B", "Llama2-70B", "GPT3-175B", "GPT3-175B-TP-8-PP-4", "OPT-66B"], help="LLM Model", required=True)
     parser.add_argument("--generate_trace", action="store_true", help="Generate traces")
     parser.add_argument("--simulate_trace", action="store_true", help="Simulate traces")
     parser.add_argument("--process_results", action="store_true", help="Process results")
@@ -47,12 +47,18 @@ def generate_trace(args, seqlen_list):
 
     print(f"Generating traces for {args.model} with {args.generate_trace_max_workers} threads...")
 
-    if args.model == "GPT3-175B":
+    if args.model == "GPT3-175B" or args.model == "GPT3-175B-PP-32":
         model = "--GPT3-175B"
     elif args.model == "Llama2-70B" or "Llama3" in args.model:
         model = "--Llama-GQA"
     elif "Llama2" in args.model:
         model = "--Llama"
+    elif args.model == "OPT-66B":
+        model = "--OPT-66B"
+    elif args.model == "GPT3-175B-TP-8-PP-4":
+        model = "--GPT3-175B-TP-8"
+    else:
+        raise ValueError(f"Model {args.model} not supported")
 
     commands_generate_traces = []
     blocks_per_device = (TransformerBlock_number[args.model] - 1) // args.num_devices + 1

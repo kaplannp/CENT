@@ -1,0 +1,5 @@
+Seqlen,Throughput (tokens/s)
+In=128 Out=128,4171.8
+In=128 Out=2048,2919.37
+In=2048 Out=128,2934.46
+In=2048 Out=2048,1759.31
