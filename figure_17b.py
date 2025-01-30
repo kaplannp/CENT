@@ -21,12 +21,12 @@ GPT3_transformer_block_number = 96
 transformer_block_number = GPT3_transformer_block_number / pp
 for batch in batch_list:
     NeuPIM_throughput = NeuPIM[(NeuPIM['Batch'] == batch)]['Throughput (K Tokens/s)'].iloc[0]
-    throughput_list.append(NeuPIM_throughput)
     NeuPIM_CXL_latency = NeuPIM[(NeuPIM['Batch'] == batch)]['CXL Latency (ms)'].iloc[0]
     latency_ms_per_token = batch / NeuPIM_throughput
     latency_ms_per_transformer_block = latency_ms_per_token / transformer_block_number
     new_latency_per_token = (latency_ms_per_transformer_block + NeuPIM_CXL_latency) * transformer_block_number
     new_throughput_K_Tokens_per_second = batch / new_latency_per_token
+    throughput_list.append(new_throughput_K_Tokens_per_second)
     million_tokens_per_dollar_list.append(new_throughput_K_Tokens_per_second * 3600 / 1000 / NeuPIM_TCO)
 CENT_throughput = df_simulation_results[(df_simulation_results['Model'] == 'GPT3-175B') & (df_simulation_results['Sequence length'] == seqlen)]['Throughput (tokens/s)'].iloc[0] * pp / 1000
 throughput_list.append(CENT_throughput)
@@ -52,7 +52,8 @@ bars = ax1.bar(x, bar_values, width, label='M Tokens/$', color='skyblue', edgeco
 # Twin axis for K Tokens/s
 ax2 = ax1.twinx()
 ax2.scatter(x, scatter_values, color='orange', label='K Tokens/s', zorder=3)
-ax2.set_ylim(0, 35)
+ax1.set_ylim(0, 4.5)
+ax2.set_ylim(0, 28)
 
 # Labels and titles
 ax1.set_ylabel('M Tokens / $')
